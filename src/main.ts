@@ -9,6 +9,7 @@ async function bootstrap() {
     ViewModule,
   );
 
+  app.engine('ejs', require('ejs').__express); 
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
