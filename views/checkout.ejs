@@ -218,8 +218,7 @@
             </div>
 
           <hr class="my-4">
-
-          <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+          <div id="paypal-button-container" style="max-width:1000px;"></div>
         </form>
       </div>
     </div>
@@ -240,4 +239,13 @@
     $('input[type="tel"]').intlTelInput({
     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/8.4.6/js/utils.js"
   });</script>
+
+<script src='https://www.paypal.com/sdk/js?client-id=<%= paypal_id %>&components=buttons'></script>
+  <script>
+    paypal.Buttons({
+    style: {
+      disableMaxWidth: true 
+    },
+  }).render('#paypal-button-container');
+  </script>
 </html>
