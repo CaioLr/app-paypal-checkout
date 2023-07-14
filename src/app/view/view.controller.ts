@@ -7,4 +7,10 @@ export class ViewController {
     home(){
       return {};
     }
+
+    @Get("/checkout")
+    @Render('checkout')
+    checkout(){
+      return {};
+    }
 }
