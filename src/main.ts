@@ -1,12 +1,12 @@
 import { NestFactory } from '@nestjs/core';
-import { ViewModule } from './app/view/view.module';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { AppModule } from './app/app.module';
 
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
-    ViewModule,
+    AppModule,
   );
 
   app.engine('ejs', require('ejs').__express); 
