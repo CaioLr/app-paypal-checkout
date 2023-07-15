@@ -5,8 +5,8 @@ import { ApiModule } from './api/api.module';
 
 @Module({
     imports: [
-        ViewModule,
         ApiModule,
+        ViewModule,
         ConfigModule.forRoot({
           isGlobal: true,
           envFilePath: '.env',
