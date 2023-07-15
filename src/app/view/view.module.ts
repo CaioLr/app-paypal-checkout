@@ -3,6 +3,6 @@ import { ViewController } from './view.controller';
 
 @Module({
   imports: [],
-  controllers: [ViewController]
+  controllers: [ViewController],
 })
 export class ViewModule {}

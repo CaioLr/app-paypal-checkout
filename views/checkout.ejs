@@ -123,14 +123,14 @@
         <ul class="list-group mb-3">
           <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
-              <h6 class="my-0">Product name</h6>
+              <h6 class="my-0">Item Name</h6>
               <small class="text-body-secondary">The couch is a cozy and inviting piece of furniture that combines comfort with style.</small>
             </div>
-            <span class="text-body-secondary">$12</span>
+            <span class="text-body-secondary">Item Value</span>
           </li>
           <li class="list-group-item d-flex justify-content-between">
             <span>Total (USD)</span>
-            <strong>$20</strong>
+            <strong>Item Value</strong>
           </li>
         </ul>
 
@@ -240,7 +240,7 @@
     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/8.4.6/js/utils.js"
   });</script>
 
-<script src='https://www.paypal.com/sdk/js?client-id=<%= paypal_id %>&components=buttons&currency=USD'></script>
+<script src='https://www.paypal.com/sdk/js?client-id=<%= process.env.PAYPAL_CLIENT_ID %>&components=buttons&currency=USD'></script>
   <script>
     paypal.Buttons({
     // Order is created on the server and the order id is returned
@@ -249,11 +249,27 @@
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-          },
+          }
         })
         .then((response) => response.json())
         .then((order) => order.id);
     },
+
+    onApprove(data) {
+      return fetch(`/api/orders/${data.orderID}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+      .then((response) => response.json())
+      .then((details) => {
+        setTimeout(function() {
+            window.location.href = `/success/${details.id}`
+        }, 1500);
+      });
+    }
+
   }).render('#paypal-button-container');
   </script>
 </html>

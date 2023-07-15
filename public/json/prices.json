@@ -1,8 +1,32 @@
-{
-    "simple":   300,
-    "classy":   500,
-    "comfy":    500,
-    "garden":   400,
-    "family":   800,
-    "executive":900
-}
+[
+    {
+        "id": 0,
+        "name": "simple",
+        "value":   300
+    },
+    {
+        "id": 1,
+        "name": "classy",
+        "value":   500
+    },
+    {
+        "id": 2,
+        "name": "comfy",
+        "value":    500
+    },
+    {
+        "id": 3,
+        "name": "garden",
+        "value":   400
+    },
+    {
+        "id": 4,
+        "name": "family",
+        "value":   800
+    },
+    {
+        "id": 5,
+        "name": "executive",
+        "value":  900
+    }
+]

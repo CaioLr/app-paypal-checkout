@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Render } from '@nestjs/common';
+import { Controller, Get, Param, Post, Redirect, Render } from '@nestjs/common';
 import { json } from 'express';
 import fetch from "node-fetch";
 
@@ -13,13 +13,12 @@ export class PaymentController {
     }
 
 
-    // @Post("/api/orders/:orderID/capture")
-    // findOne(@Param() params:string[])
-    // async capture(): Promise<any[]> {
-    //     const captureData = await capturePayment(order_id);
-    //     return [json(captureData)];
+    @Post("/api/orders/:orderID")
+    async findOne(@Param('orderID') orderId: string) {
+        const captureData = await capturePayment(orderId);
+        return captureData;
 
-    // }
+    }
 }
 
 const baseURL = {
@@ -54,7 +53,7 @@ async function createOrder() {
         {
           "amount": {
             "currency_code": "USD",
-            "value": "100.00"
+            "value": "1.00"
           }
         }
       ],
@@ -74,3 +73,17 @@ async function createOrder() {
     })
   }).then((response) => response.json());
 }
+
+async function capturePayment(orderId: string) {
+
+  const accessToken = await generateAccessToken();
+  return fetch( `https://api-m.sandbox.paypal.com/v2/checkout/orders/${orderId}/capture`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  }).then((response) => response.json());
+ 
+}
+
