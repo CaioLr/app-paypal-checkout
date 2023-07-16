@@ -1,15 +1,14 @@
-import { Controller, Get, Param, Post, Redirect, Render } from '@nestjs/common';
-import { json } from 'express';
+import { Controller, Param, Post, RawBodyRequest, Req } from '@nestjs/common';
 import fetch from "node-fetch";
 
 @Controller()
 export class PaymentController { 
     
     @Post('api/orders')
-    async create(): Promise<any> {
-        const order = await createOrder();
-        return order;
-
+    async create(@Req() req : RawBodyRequest<Request> ): Promise<any> {
+      console.log(req.body);
+      const order = await createOrder(req.body);
+      return order;
     }
 
 
@@ -39,8 +38,10 @@ async function generateAccessToken() {
   return data.access_token;
 }
 
-async function createOrder() {
+async function createOrder(body) {
   const accessToken = await generateAccessToken();
+
+  const value = parseFloat(body.value).toFixed(2)
 
   return fetch ("https://api-m.sandbox.paypal.com/v2/checkout/orders", {
     method: "POST",
@@ -53,7 +54,7 @@ async function createOrder() {
         {
           "amount": {
             "currency_code": "USD",
-            "value": "1.00"
+            "value": value.toString()
           }
         }
       ],
@@ -69,7 +70,22 @@ async function createOrder() {
             "user_action": "PAY_NOW",
           }
         }
+      },
+      "payer":{
+        "email_addres": body.email.toString(),
+        "name": {
+          "given_name":body.firstName.toString(),
+          "surname": body.lastName.toString()
+        },
+        "address": {
+          "address_line_1": body.address1.toString(),
+          "address_line_2": body.address2.toString(),
+          "admin_area_1": body.state.toString(),
+          "postal_code": body.zip.toString(),
+          "country_code": body.country.toString()
+        }
       }
+
     })
   }).then((response) => response.json());
 }

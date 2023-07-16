@@ -130,7 +130,7 @@
           </li>
           <li class="list-group-item d-flex justify-content-between">
             <span>Total (USD)</span>
-            <strong><%='$'+item.value %></strong>
+            <strong id="total"><%='$'+item.value %></strong>
           </li>
         </ul>
 
@@ -138,11 +138,11 @@
       </div>
       <div class="col-md-7 col-lg-8">
         <h4 class="mb-3">Billing information</h4>
-        <form class="needs-validation" novalidate>
+        <form class="needs-validation" id="form">
           <div class="row g-3">
             <div class="col-sm-6">
               <label for="firstName" class="form-label">First name</label>
-              <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+              <input type="text" class="form-control" id="firstName" placeholder="Caio" value="Caio" required>
               <div class="invalid-feedback">
                 Valid first name is required.
               </div>
@@ -150,7 +150,7 @@
 
             <div class="col-sm-6">
               <label for="lastName" class="form-label">Last name</label>
-              <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+              <input type="text" class="form-control" id="lastName" placeholder="Ramos" value="Ramos" required>
               <div class="invalid-feedback">
                 Valid last name is required.
               </div>
@@ -158,23 +158,23 @@
 
             <div class="col-12">
               <label for="email" class="form-label">Email </label>
-              <input type="email" class="form-control" id="email" placeholder="you@example.com">
+              <input type="email" class="form-control" id="email" placeholder="you@example.com" value="you@example.com">
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
             </div>
 
             <div class="col-12">
-                <label for="tel" class="form-label">Telephone </label>
-                <input id="tel" type="tel" class="form-control">
+                <label for="telephone" class="form-label">Telephone </label>
+                <input id="telephone" type="tel" class="form-control" value="201 555 5555">
                 <div class="invalid-feedback">
                     Please enter your telephone.
                 </div>
             </div>
             
             <div class="col-12">
-              <label for="address" class="form-label">Address</label>
-              <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+              <label for="address1" class="form-label">Address</label>
+              <input type="text" class="form-control" id="address1" placeholder="1234 Main St"  value="100th St" required>
               <div class="invalid-feedback">
                 Please enter your shipping address.
               </div>
@@ -183,14 +183,14 @@
             
             <div class="col-12">
                 <label for="address2" class="form-label">Address 2 <span class="text-body-secondary">(Optional)</span></label>
-                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite" value="103th St">
               </div>
 
             <div class="col-md-5">
                 <label for="country" class="form-label">Country</label>
                 <select class="form-select" id="country" required>
                   <option value="">Choose...</option>
-                  <option>United States</option>
+                  <option value="US" selected>United States</option>
                 </select>
                 <div class="invalid-feedback">
                   Please select a valid country.
@@ -201,7 +201,7 @@
                 <label for="state" class="form-label">State</label>
                 <select class="form-select" id="state" required>
                   <option value="">Choose...</option>
-                  <option>California</option>
+                  <option selected>California</option>
                 </select>
                 <div class="invalid-feedback">
                   Please provide a valid state.
@@ -210,7 +210,7 @@
   
               <div class="col-md-3">
                 <label for="zip" class="form-label">Zip</label>
-                <input type="text" class="form-control" id="zip" placeholder="" required>
+                <input type="text" class="form-control" id="zip" placeholder="91331" value="91331" required>
                 <div class="invalid-feedback">
                   Zip code required.
                 </div>
@@ -245,14 +245,20 @@
     paypal.Buttons({
     // Order is created on the server and the order id is returned
     createOrder: () => {
-        return fetch("/api/orders", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        })
-        .then((response) => response.json())
-        .then((order) => order.id);
+      
+      let formData = makeFormData()
+    
+      return fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          "Content-Type": "application/json",
+        },
+        body: formData
+      })
+      .then((response) => response.json())
+      .then((order) => order.id);
+
     },
 
     onApprove(data) {
@@ -271,5 +277,27 @@
     }
 
   }).render('#paypal-button-container');
+
+  function makeFormData(){
+    let formData = new FormData();
+      formData.append('value' ,document.getElementById('total').innerText.substring(1));
+      formData.append('email', document.getElementById('email').value);
+      formData.append('firstName', document.getElementById('firstName').value);
+      formData.append('lastName', document.getElementById('lastName').value);
+      formData.append('telephone', document.getElementById('telephone').value);
+      formData.append('address1', document.getElementById('address1').value);
+      formData.append('address2', document.getElementById('address2').value);
+      formData.append('country', document.getElementById('country').value);
+      formData.append('zip', document.getElementById('zip').value);
+      formData.append('state', document.getElementById('state').value);
+  
+      var object = {};
+      formData.forEach((value, key) => object[key] = value);
+      var json = JSON.stringify(object);
+
+      return json
+  }
+
+
   </script>
 </html>
