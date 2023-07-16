@@ -1,3 +1,25 @@
+# app-paypal-checkout
+
+Author: Caio Eduardo Furtado Leite Lanceta Ramos
+
+Application with a simple Front-end, with the goal to use the PayPal API simulating a basic web store of couches.
+
+## Used tools and frameworks
+- NestJS
+- TypeScript
+- JavaScript
+- JQuery
+- EJS
+- PayPal API
+
+## Observações
+- The main code its found on the folder: <a href="https://github.com/CaioLr/app-paypal-checkout/tree/main/src/app">/src/app</a>
+- To reproduce the code you must place the environment variables, namely:
+  - PAYPAL_CLIENT_ID
+  - PAYPAL_APP_SECRET
+  Both can be obtained using your Paypal account at: <a href="https://developer.paypal.com/dashboard/applications/sandbox">developer.paypal.com/dashboard/applications/sandbox</a>
+
+---
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
