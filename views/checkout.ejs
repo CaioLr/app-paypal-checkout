@@ -123,14 +123,14 @@
         <ul class="list-group mb-3">
           <li class="list-group-item d-flex justify-content-between lh-sm">
             <div>
-              <h6 class="my-0">Item Name</h6>
+              <h6 class="my-0"><%= item.name %></h6>
               <small class="text-body-secondary">The couch is a cozy and inviting piece of furniture that combines comfort with style.</small>
             </div>
-            <span class="text-body-secondary">Item Value</span>
+            <span class="text-body-secondary"><%='$'+item.value %></span>
           </li>
           <li class="list-group-item d-flex justify-content-between">
             <span>Total (USD)</span>
-            <strong>Item Value</strong>
+            <strong><%='$'+item.value %></strong>
           </li>
         </ul>
 

@@ -1,8 +1,9 @@
 import { Controller, Get, Param, Render } from '@nestjs/common';
-
+import { ItemsService } from '../items/items.service';
 
 @Controller()
 export class ViewController {
+  constructor(private readonly itemsService: ItemsService){}
 
     @Get()
     @Render('index')
@@ -19,7 +20,9 @@ export class ViewController {
 
     @Get("/checkout/:itemId")
     @Render('checkout')
-    async findOne(@Param('itemId') item_id: string) {
-      return {};
-    }
+    async checkout(@Param('itemId') item_id: string) {
+      const item = await this.itemsService.findOne(item_id);
+      return { item }
+    };
 }
+
