@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ViewController } from './view.controller';
-import { ItemsModule } from 'src/app/items/items.module';
+import { ItemsModule } from '../items/items.module';
 
 @Module({
   imports: [ItemsModule],
