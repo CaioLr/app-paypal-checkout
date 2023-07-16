@@ -142,7 +142,7 @@
           <div class="row g-3">
             <div class="col-sm-6">
               <label for="firstName" class="form-label">First name</label>
-              <input type="text" class="form-control" id="firstName" placeholder="Caio" value="Caio" required>
+              <input type="text" class="form-control" id="firstName"  value="" required>
               <div class="invalid-feedback">
                 Valid first name is required.
               </div>
@@ -150,7 +150,7 @@
 
             <div class="col-sm-6">
               <label for="lastName" class="form-label">Last name</label>
-              <input type="text" class="form-control" id="lastName" placeholder="Ramos" value="Ramos" required>
+              <input type="text" class="form-control" id="lastName" required>
               <div class="invalid-feedback">
                 Valid last name is required.
               </div>
@@ -216,8 +216,12 @@
                 </div>
               </div>
             </div>
-
+          
+          <div class="alert alert-warning" role="alert" id="warning" style="margin-top: 10px;" hidden>
+            Check the fields above to release the payment button.
+          </div>
           <hr class="my-4">
+          
           <div id="paypal-button-container" style="max-width:1000px;"></div>
         </form>
       </div>
@@ -243,6 +247,28 @@
 <script src='https://www.paypal.com/sdk/js?client-id=<%= process.env.PAYPAL_CLIENT_ID %>&components=buttons&currency=USD'></script>
   <script>
     paypal.Buttons({
+
+    // onInit is called when the button first renders
+    onInit: function(data, actions) {
+
+      // Disable the buttons
+      actions.disable();
+
+      // Listen for changes to the checkbox
+      document.querySelector('#form')
+        .addEventListener('change', function(event) {
+
+          // Enable or disable the button when it is checked or unchecked
+          if (event.target.checkValidity()) {
+            $('#warning').removeAttr("hidden");
+            actions.enable();
+          } else {
+            $('#warning').attr("hidden",true);
+            actions.disable();
+          }
+        });
+    },
+
     // Order is created on the server and the order id is returned
     createOrder: () => {
       
