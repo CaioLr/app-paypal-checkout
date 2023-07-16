@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 
 @Controller()
 export class PaymentController { 
-    
+    //Make the order
     @Post('api/orders')
     async create(@Req() req : RawBodyRequest<Request> ): Promise<any> {
       console.log(req.body);
@@ -11,7 +11,7 @@ export class PaymentController {
       return order;
     }
 
-
+    //Returns orderID
     @Post("/api/orders/:orderID")
     async findOne(@Param('orderID') orderId: string) {
         const captureData = await capturePayment(orderId);
@@ -38,6 +38,7 @@ async function generateAccessToken() {
   return data.access_token;
 }
 
+//Returns the orderId for button works
 async function createOrder(body) {
   const accessToken = await generateAccessToken();
 
@@ -90,6 +91,7 @@ async function createOrder(body) {
   }).then((response) => response.json());
 }
 
+//Returs payment info
 async function capturePayment(orderId: string) {
 
   const accessToken = await generateAccessToken();
